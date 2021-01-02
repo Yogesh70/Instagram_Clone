@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Ab Devilliers",
+        "password": 451323543,
+        "handle": "AbDev45",
+        "bio": "SA Cricketer",
+        "email": "Devilliers20@abc.com",
+        "uid": "27f0fa77-0ed3-4bd3-a3b8-ffa75d5cc46b"
+    },
+    {
+        "name": "Faf Du Plesis",
+        "password": 52322124,
+        "handle": "Plesy12",
+        "bio": "SA Cricketer",
+        "email": "FdPlesy150@abc.com",
+        "uid": "58dfe26f-09ce-4428-a693-b4f3c6146840"
+    },
+    {
+        "name": "Quinton DeKock",
+        "password": 353135131,
+        "handle": "Quiny23",
+        "bio": "SA WicketKeeper",
+        "email": "QuinDeKock@abc.com",
+        "uid": "589c2955-e288-4d5a-998c-1fdb8cffcb4f"
+    }
+]
