@@ -7,6 +7,7 @@ const path = require('path');
 
 // Model
 const userModel = require('../Model/userModel');
+const user_followerModel = require('../Model/user_followerModel');
 
 
 const getAllUser = (req, res) => {
@@ -20,7 +21,6 @@ const getAllUser = (req, res) => {
 const getUser = async (req, res) => { 
     // req parameters -> user id
   let cUid = req.params.uid;
-
     try{
         let user = await userModel.getById(cUid);
         res.status(201).json({
@@ -56,35 +56,51 @@ const createUser = async (req, res) => {
     }
 }
 
-const updateUser = (req, res) => {
-    let user = getUserById(req.params.uid);  
-    let toBeUpdated = req.body;
+const updateUser = async (req, res) => {
+    // let user = getUserById(req.params.uid);
+    let uid = req.params.uid;  
+    let toBeUpdatedObj = req.body;
+    try{
+        let result = await userModel.update(uid,toBeUpdatedObj);
+        res.status(200).json({
+            status: "success",
+            "message": result
+        })
+    } catch(err){
+        res.status(500).json({
+            status: "failure",
+            "message": err.message
+        })
+    }
   // user , obj
   // user.something <- key literal search for key with same name
-      for(let key in user){
-          console.log(key);
-          user[key] = toBeUpdated[key];
-      }
-      fs.writeFileSync(path.join(__dirname,'./db/user.json'), JSON.stringify(userDB)); 
-      res.status(200).json({
-          status: "success",
-          user: user
-      })
+    //   for(let key in user){
+    //       console.log(key);
+    //       user[key] = toBeUpdated[key];
+    //   }
+    //   fs.writeFileSync(path.join(__dirname,'./db/user.json'), JSON.stringify(userDB));
   }
 
-const deleteUser = (req, res) => {
+const deleteUser = async(req, res) => {
     let cid = req.params.uid;
-    console.log(userDB.length);
-    userDB = userDB.filter((user) => {
-        return user.uid != cid;
-    })
+    try {
+        let result = await userModel.deleteById(cid);
+        res.status(200).json({
+            status: "success",
+            "message": result
+        })
+    } catch(err){
+        res.status(500).json({
+            status: "failure",
+            "message": err.message
+        })
+    }
+    // console.log(userDB.length);
+    // userDB = userDB.filter((user) => {
+    //     return user.uid != cid;
+    // })
     
-    fs.writeFileSync(path.join(__dirname,'./db/user.json'), JSON.stringify(userDB)); 
-    res.status(200).json({
-      status: "success",
-      userDB,
-      length: userDB.length 
-    })
+    // fs.writeFileSync(path.join(__dirname,'./db/user.json'), JSON.stringify(userDB)); 
 }
 
 function getUserById(cUid){
@@ -108,12 +124,63 @@ let checkBody = function (req,res,next){
     }
 }
 
+// ********************************* REQUEST ************************************
+// Send Request
+let createRequest = async(req, res) => {
+    let user = req.body;
+    let user_id = req.body.user_id;
+    let follower_id = req.body.follower_id;
+    try{
+        await user_followerModel.addPendingFollower(user);
+
+        let { is_public } = await userModel.getById(user_id);
+        if(is_public == true){
+            await user_followerModel.acceptRequest(user_id,follower_id);
+            return res.status(201).json({
+                status: "success",
+                "message": "request accepted"
+            })
+        } 
+        
+        res.status(201).json({
+            status: "pending",
+            "message": "request Sent user will accept it"
+        })
+    } catch(err){
+        console.log(err);
+        res.status(500).json({
+            status: "failure",
+            "message": err.message
+        })
+    }
+}
+
+// Get All Followers 
+let getAllFollowers = async(req, res) => {
+    let cUid = req.params.id;
+    try{
+        let result = await user_followerModel.getAllFollowers(cUid);
+        res.status(201).json({
+            status: "success",
+            "message": result
+        })
+    } catch(err){
+        console.log(err);
+        res.status(500).json({
+            status: "failure",
+            "message": err.message
+        })
+    }
+}
+
   module.exports = {
       getUser,
       getAllUser,
       createUser,
       updateUser,
       deleteUser,
-      checkBody
+      checkBody,
+      createRequest,
+      getAllFollowers
   };
   

@@ -22,6 +22,8 @@ const app = express();
     
     // post => user => name,password,handle,image_url,bio,email,uid
     
+    app.use(express.static("public"));
+
     // user defined middleware
     app.use(function before(req,res,next){
         console.log('I will run before express.json');

@@ -3,7 +3,10 @@ const connection = require('./connection');
 // npm i nodemon --save-dev
 // npm i uuid
 const { v4: uuidv4 } = require('uuid');
-const userModel = {};
+// const userModel = {};
+const util = require('util');
+const { resolve } = require('path');
+let pQuery = util.promisify(connection.query); // to promisify connection.query 
 
 // create
 let create = (userObj) => {
@@ -37,11 +40,44 @@ let getById = (uid) => {
 }
 
 // update
+let update = async (uid, toUpdateObject) => {
+    
+    let updateString = '';
+    for(let attr in toUpdateObject){
+        updateString += `${attr} = "${toUpdateObject[attr]}", `;  // updateString = toUpdateObject[email] ki value new wali
+    }
+    updateString = updateString.substring(0, updateString.length - 2);
+    console.log(updateString);
+    return new Promise(function(resolve,reject) {
+        connection.query(`UPDATE user SET ${updateString} WHERE uid = "${uid}"`, function(err, result){
+            if(err){
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
 // delete
+let deleteById = (uid) => {
+    return new Promise(function (resolve,reject) {
+        connection.query('DELETE FROM user WHERE uid = ?', uid, function(err,result){
+            if(err){
+                reject(err);
+            } else{
+                resolve(result);
+            }
+        });
+    });
+}
+
 // send request
 // receive request
 
 module.exports = {
     create,
-    getById
+    getById,
+    update,
+    deleteById
 };
