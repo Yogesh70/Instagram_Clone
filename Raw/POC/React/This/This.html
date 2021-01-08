@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- this is current object it is determined on runtime -->
+    <script>
+        // console.log(window);
+        // Removes the Window object
+        "use strict";
+        // name = "steve"; // by default added to window object
+        let obj = {
+            name: "Yogesh",
+            sayHi: function(){
+                // "this" => calling obj
+                console.log("Line no. 17");
+                console.log(this);
+                // console.log(this.name);
+                function inner(){
+                    console.log("Line no. 21");
+                    console.log(this);
+                }
+                inner(); // "this" -> Window
+                let BindWithObj = inner.bind(obj);  // "this" -> Obj
+                BindWithObj();
+                // it takes "this" from outside
+                let arrow = () => {
+                    console.log("Line no. 29");
+                    console.log(this);
+                }
+                // there is no need to bind arrow function with obj, they take "this" from their outer/lexical Scope
+                arrow(); // obj
+            }
+        }
+        // method call
+        obj.sayHi();
+        function fun(){
+            // window object
+            console.log(this);
+            // console.log(window.name);
+            // console.log(name);
+        }
+        // fun call => "this" => window
+        fun();
+    </script>
+
+</body>
+</html>
