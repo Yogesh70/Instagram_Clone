@@ -1,17 +1,19 @@
+// imr
+import React from 'react';
 // sfc
-const TaskList = () => {
+const TaskList = (props) => {
+    let {TasksfList, handleTask} = props;
     
     return (
-
     <React.Fragment>
         {/*Task List*/}
         <div className="container"> 
-            {tasks.map((task) => {
+            {TasksfList.map((task) => {
                 return(
                     <div key = {task.id}>
                         <p className="d-inline mr-4">{task.name}</p>
                         <button className="btn btn-danger"
-                        onClick={() => {this.removeTask(task.id)}}
+                        onClick={() => {handleTask(task.id)}}
                         >x</button>
                     </div>
                 )
