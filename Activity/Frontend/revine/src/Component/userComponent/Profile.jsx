@@ -16,10 +16,11 @@ class Profile extends Component {
          axios.get("/api/v1/user/ce5dbe3c-036f-4743-aa84-637ef032508c")
          .then((res) => {
             console.log(res.data);
-            const { name,handle } = res.data.user;
+            const { name,handle, pImg_url } = res.data.user;
             this.setState({
                 name: name,
-                handle: handle
+                handle: handle,
+                src: pImg_url
                 })
             })
             .then(() =>
