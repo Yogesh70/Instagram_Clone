@@ -16,10 +16,10 @@ class InputBox extends Component {
     render() { 
         return ( 
             <React.Fragment>
-                    <form onSubmit= {(e) => {
-                            e.preventDefault();
-                            this.handleSubmit();                        
-                    }}>
+                <form onSubmit= {(e) => {
+                        e.preventDefault();
+                        this.handleSubmit();                        
+                }}>
 
                     <input type="text" 
                         value={this.state.value}

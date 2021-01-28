@@ -173,6 +173,23 @@ let getAllFollowers = async(req, res) => {
     }
 }
 
+let getCountOfAllFollowers = async(req,res) => {
+    let cUid = req.params.id;
+    try{
+        let result = await user_followerModel.getCountFollowers(cUid);
+        res.status(201).json({
+            status: "success",
+            "message": result
+        })
+    } catch(err){
+        console.log(err);
+        res.status(500).json({
+            status: "failure",
+            "message": err.message
+        })
+    }
+}
+
   module.exports = {
       getUser,
       getAllUser,
@@ -181,6 +198,7 @@ let getAllFollowers = async(req, res) => {
       deleteUser,
       checkBody,
       createRequest,
-      getAllFollowers
+      getAllFollowers,
+      getCountOfAllFollowers
   };
   

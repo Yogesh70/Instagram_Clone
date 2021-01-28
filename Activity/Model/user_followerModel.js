@@ -4,6 +4,7 @@ const connection = require('./connection');
 const { v4: uuidv4 } = require('uuid');
 // const userModel = {};
 const util = require('util');
+const { promises } = require('fs');
 
 let addPendingFollower = (obj) => {
     return new Promise(function(resolve,reject){
@@ -41,8 +42,21 @@ let acceptRequest = (user_id,follower_id) => {
     })
 }
 
+let getCountFollowers = (user_id) => {
+    return new Promise(function(resolve,reject) {
+        connection.query(`SELECT COUNT(*) AS followersCount FROM user_follower WHERE user_id = "${user_id}" AND is_accepted=1`, (err,result) => {
+            if(err){
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+}
+
 module.exports = {
     addPendingFollower,
     getAllFollowers,
-    acceptRequest
+    acceptRequest,
+    getCountFollowers
 };

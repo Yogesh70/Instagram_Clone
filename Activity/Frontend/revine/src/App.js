@@ -1,12 +1,11 @@
 import React from 'react';
 import './App.css';
-import UserView1Left from './Component/userComponent/UserView1Left';
-import UserView from './Component/userComponent/UserView1Left';
+import UserView from './Component/userComponent/UserView.jsx';
 
 function App() {
   return ( 
     <React.Fragment>
-      <UserView1Left></UserView1Left>
+      <UserView></UserView>
     </React.Fragment>
    );
 }
