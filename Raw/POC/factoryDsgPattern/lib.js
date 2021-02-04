@@ -3,6 +3,7 @@
 
 // module.exports -> node object that is exported to the file that require the current file
 
+entity = "fake";
 module.exports.fn = function createFactory(entity){
     console.log("Inside entity");
     console.log('Returning create ' + entity + ' fn');

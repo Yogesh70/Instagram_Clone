@@ -1,9 +1,7 @@
 // npm i nodemon --save-dev
 // npm i uuid
 const { v4: uuidv4 } = require('uuid');
-const userDB = require('../Model/post.json');
-const fs = require('fs');
-const path = require('path');
+const postModel = require('../Model/postModel');
 
 const getAllPost = (req, res) => {
     console.log(req.body);
@@ -27,20 +25,42 @@ const getPost = (req, res) => {
 //   next();
 }
 
-const createPost = (req, res) => { 
-    let user = req.body;
+// const createPost = (req, res) => { 
+//     let user = req.body;
+//     // console.log(user);
+//     // creating uniqueId before pushing
+//     user.uid = uuidv4();
+//     userDB.push(user);
+//     // saved to db folder in disk
+//     fs.writeFileSync('./db/user.json', JSON.stringify(userDB));
+//     // res
+//     // res.status(201).json({
+//         // status: "success",
+//         // res: "User Created",
+//         // user: req.body
+//     // })
+// }
+
+const createPost = async (req, res) => { 
+    let post = req.body;
     // console.log(user);
-    // creating uniqueId before pushing
-    user.uid = uuidv4();
-    userDB.push(user);
-    // saved to db folder in disk
-    fs.writeFileSync('./db/user.json', JSON.stringify(userDB));
-    // res
-    // res.status(201).json({
-        // status: "success",
-        // res: "User Created",
-        // user: req.body
-    // })
+    
+    try{
+        const date = new Date(); 
+        post.created_at = date.toISOString().slice(0, 19).replace('T', ' ');
+        let nDBPost = await postModel.create(post);
+        // res
+        res.status(201).json({
+            status: "success",
+            res: "User Created",
+            post: nDBPost
+        })
+    } catch(err) {
+        res.status(500).json({
+            status: "failure",
+            "message": err.message
+        })
+    }
 }
 
 const updatePost = (req, res) => {

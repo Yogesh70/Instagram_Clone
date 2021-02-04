@@ -4,26 +4,26 @@ const connection = require('./connection');
 // npm i uuid
 const { v4: uuidv4 } = require('uuid');
 // const userModel = {};
-const util = require('util');
-const { resolve } = require('path');
-let pQuery = util.promisify(connection.query); // to promisify connection.query 
+const factory = require('./factoryModel');
 
 // create
-let create = (userObj) => {
-    // creating uniqueId 
-    userObj.uid = uuidv4();
-    // create user
-    return new Promise(function(resolve, reject) {
-        connection.query("INSERT INTO user SET ?", userObj , function (err, res) {
-            if (err) {
-                reject(err);
-                return;
-            } else {
-                resolve(res);
-            }
-        })  
-    })
-}
+// let create = (userObj) => {
+//     // creating uniqueId 
+//     userObj.uid = uuidv4();
+//     // create user
+//     return new Promise(function(resolve, reject) {
+//         connection.query("INSERT INTO user SET ?", userObj , function (err, res) {
+//             if (err) {
+//                 reject(err);
+//                 return;
+//             } else {
+//                 resolve(res);
+//             }
+//         })  
+//     })
+// }
+let create = factory.createFactory("user");
+
 
 // getby Uid
 let getById = (uid) => {

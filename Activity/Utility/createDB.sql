@@ -2,7 +2,7 @@
 
 /* user */
 CREATE TABLE IF NOT EXISTS user (
-    uid VARCHAR(255) PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     phone BIGINT NOT NULL UNIQUE,
     email VARCHAR(100) UNIQUE,
@@ -20,9 +20,11 @@ CREATE TABLE IF NOT EXISTS user_follower (
 );
 
 /* POST */
-/* CREATE TABLE IF NOT EXISTS post (
-    pid VARCHAR(255) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS post (
+    id VARCHAR(255) PRIMARY KEY,
     created_at DATETIME NOT NULL,
-    author_id INDEX NOT NULL CHAR,
-    description 
-); */
+    author_id VARCHAR(80) NOT NULL,
+    description VARCHAR(255),
+    p_img_url VARCHAR(255) NOT NULL,
+    INDEX (author_id)
+); 
