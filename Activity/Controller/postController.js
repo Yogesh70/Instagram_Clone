@@ -14,7 +14,7 @@ const getAllPost = (req, res) => {
 const getPost = (req, res) => { 
     // req parameters -> user id
   let cUid = req.params.uid;
-    let userArr = userDB.filter((user) => {
+    let userArr = postModel.filter((user) => {
           return user.uid == cUid;
     })
     console.log(req.params);
@@ -63,44 +63,39 @@ const createPost = async (req, res) => {
     }
 }
 
-const updatePost = (req, res) => {
-    let user = getPostById(req.params.uid);  
-    let toBeUpdated = req.body;
-  // user , obj
-  // user.something <- key literal search for key with same name
-      for(let key in user){
-          console.log(key);
-          user[key] = toBeUpdated[key];
-      }
-      fs.writeFileSync(path.join(__dirname,'./db/user.json'), JSON.stringify(userDB)); 
-      res.status(200).json({
-          status: "success",
-          user: user
-      })
-  }
+const updatePost = async (req, res) => {
+    // let user = getUserById(req.params.uid);
+    let id = req.params.id;  
+    let toBeUpdatedObj = req.body;
+    try{
+        let result = await postModel.update(id,toBeUpdatedObj);
+        res.status(200).json({
+            status: "success",
+            "message": result
+        })
+    } catch(err){
+        res.status(500).json({
+            status: "failure",
+            "message": err.message
+        })
+    }
+}    
 
-const deletePost = (req, res) => {
+const deletePost = async(req, res) => {
     let cid = req.params.uid;
-    console.log(userDB.length);
-    userDB = userDB.filter((user) => {
-        return user.uid != cid;
-    })
-    
-    fs.writeFileSync(path.join(__dirname,'./db/user.json'), JSON.stringify(userDB)); 
-    res.status(200).json({
-      status: "success",
-      userDB,
-      length: userDB.length 
-    })
+    try {
+        let result = await postModel.deleteById(cid);
+        res.status(200).json({
+            status: "success",
+            "message": result
+        })
+    } catch(err){
+        res.status(500).json({
+            status: "failure",
+            "message": err.message
+        })
+    }
 }
-
-function getPostById(cUid){
-
-    let userArr = userDB.filter((user) => {
-        return user.uid == cUid;
-    });
-    return userArr[0];
-  }  
 
 module.exports = {
     getAllPost,
