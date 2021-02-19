@@ -37,3 +37,13 @@ CREATE TABLE IF NOT EXISTS user_following (
     PRIMARY KEY (u_id, following_id),
     INDEX (u_id)
 );
+
+/* Comments */
+CREATE TABLE IF NOT EXISTS comments (
+    id VARCHAR(255) PRIMARY KEY,
+    created_at DATETIME NOT NULL,
+    post_id VARCHAR(255) NOT NULL,
+    author_id VARCHAR(255) NOT NULL,
+    description LONGTEXT NOT NULL,
+    INDEX (post_id)
+);

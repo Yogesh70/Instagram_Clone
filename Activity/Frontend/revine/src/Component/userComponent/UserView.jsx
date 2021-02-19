@@ -45,8 +45,6 @@ class UserView extends Component {
 
                 })
         }
-
-
     }
 
     render() { 
